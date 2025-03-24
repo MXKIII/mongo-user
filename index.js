@@ -2,6 +2,8 @@ import express from "express"
 import 'dotenv/config'
 import connectDB from "./database/client.js"
 import authRouter from "./routes/authRouter.js"
+import eventRouter from "./routes/events.js"
+
 
 
 const app = express()
@@ -12,6 +14,7 @@ app.get('/',(req, res)=>{
    res.send('Welcome to my event api')
 })
 app.use('/api',authRouter)
+app.use('/api',eventRouter)
 connectDB();
 
 app.listen(PORT,()=>{
