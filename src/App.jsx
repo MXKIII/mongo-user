@@ -1,48 +1,32 @@
-import { useState, useEffect } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import axios from "axios"
 import './App.css'
+import {useContext } from 'react'
+import { ServicesContext } from './context/servicesContext.jsx'
 
 function App() {
 
-  const [services, setServices] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const [services, setServices] = useContext(ServicesContext)
 
-  const fetchServices = async () =>{
-    try {
-      const response = await axios.get('http://localhost:8000/api/service')
-      if(response.status === 200){
-      setServices(response.data)
-      console.log(response.data)
-    }
-    } catch (error) {
-      console.log(error)
-    }
-    finally{
-      setLoading(false)
-    }
-  }
-
-
-  useEffect(()=>{
-    fetchServices()
-  },[])
 
   return (
     <>
-      <h1 className="text-3xl font-bold underline">this is my event app</h1>
-      {services && !loading && (
-        <ul>
+      <h1 className="text-3xl font-bold underline bg-sky-300">Hello this is my event APP</h1>
+      <div className='flex flex-wrap p-7 m-7 space-between'>
+      {services && services.map(service => {
+        return ( 
+          <ul>
           {services.map((service, index) => (
-             <li key={index} className="mb-4 last:mb-0 border-b border-black pb-2 last:border-b-0">
+             <li 
+             key={index} 
+             className="bg-cyan-500 shadow-md rounded-lg p-4 transition duration-300 ease-in-out hover:shadow-lg hover:scale-105"
+           >
               <h2>{service.title}</h2>
               <p>{service.description}</p>
             </li>
           ))}
         </ul>
-      )}
+        )
+      })}
+      </div>
     </>
   )
 }
