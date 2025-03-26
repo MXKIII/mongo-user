@@ -4,6 +4,7 @@ import NavBar from "./components/navBar";
 import App from "./App";
 import Contact from "./page/contact";
 import Register from "./page/register";
+import Login from "./page/login";
 const MyRouter = () =>{
     return(
         <>
@@ -13,6 +14,7 @@ const MyRouter = () =>{
             <Route path='/profile' element={<Profile/>}/>
             <Route path='/contact' element={<Contact/>}/>
             <Route path='/register' element={<Register/>}/>
+            <Route path='/login' element={<Login/>}/>
         </Routes>
         </>
     )
