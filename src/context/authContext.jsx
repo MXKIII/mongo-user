@@ -13,7 +13,7 @@ export const AuthController = ({ children }) => {
         e.preventDefault()
         console.log(email, password)
         try {
-            const response = axios.post("http://localhost:8000/api/login", {email,password})
+            const response = await axios.post("http://localhost:8000/api/login", {email,password})
             if(response.status===200){
                 localStorage.setItem('token',response.data.token)
                 setIsAuthenticated(true)
