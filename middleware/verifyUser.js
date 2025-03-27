@@ -14,8 +14,13 @@ export const verifyUser= async(req,res,next)=>{
     }
     req.user=verify
     next()
-    } catch (err) {
-        console.log(err);
-        return res.status(400).json({message:"internal server error"})
+    } catch (error) {
+        if (error instanceof jwt.JsonWebTokenError) {
+            return res.status(403).json({ error: "Invalid token : incorrect signature" });
+        }
+        if (error instanceof jwt.TokenExpiredError) {
+            return res.status(403).json({ error: "Token expired, please login again" });
+        }
+        return res.status(500).json({ error: "Error while verifating the token" });
     }
 }
