@@ -1,4 +1,4 @@
-import { useState, createContext } from 'react'
+import { useState, createContext, useEffect } from 'react'
 import axios from "axios"
 import { useNavigate } from 'react-router-dom'
 
@@ -8,6 +8,21 @@ export const AuthContext = createContext(null)
 export const AuthController = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false)
     let navigate = useNavigate()
+
+    useEffect(()=>{
+        let token = localStorage.getItem('token')
+        if(token){
+            setIsAuthenticated(true)
+        }
+    },[])
+
+    const handleLogout = () => {
+        localStorage.removeItem('token')
+        setIsAuthenticated(false)
+        navigate('/')
+    }
+
+    
 
     const handleLogin = async(e, email, password) =>{
         e.preventDefault()
@@ -26,7 +41,7 @@ export const AuthController = ({ children }) => {
     }
 
     return (
-        <AuthContext.Provider value={{isAuthenticated, setIsAuthenticated, handleLogin}}>
+        <AuthContext.Provider value={{isAuthenticated, setIsAuthenticated, handleLogin, handleLogout}}>
             {children}
         </AuthContext.Provider>
     )
