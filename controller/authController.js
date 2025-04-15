@@ -20,6 +20,7 @@ export const createUser = async (req,res)=>{
             last_name,
             email,
             password : hashedPassword,
+            image: '/public/images/' + req.file.filename
         })
         await newUser.save()
         return res.status(201).json({message:`welcome ${first_name}`})
