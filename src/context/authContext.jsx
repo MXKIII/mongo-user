@@ -6,43 +6,44 @@ export const AuthContext = createContext(null)
 
 
 export const AuthController = ({ children }) => {
-    const [isAuthenticated, setIsAuthenticated] = useState(false)
-    let navigate = useNavigate()
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [tokenStorage, setTokenStorage] = useState(null); 
+    let navigate = useNavigate();
 
-    useEffect(()=>{
-        let token = localStorage.getItem('token')
-        if(token){
-            setIsAuthenticated(true)
+    useEffect(() => {
+        let token = localStorage.getItem('token');
+        if (token) {
+            setTokenStorage(token); 
+            setIsAuthenticated(true);
         }
-    },[])
+    }, []);
 
     const handleLogout = () => {
-        localStorage.removeItem('token')
-        setIsAuthenticated(false)
-        navigate('/')
-    }
+        localStorage.removeItem('token');
+        setTokenStorage(null); 
+        setIsAuthenticated(false);
+        navigate('/');
+    };
 
-    
-
-    const handleLogin = async(e, email, password) =>{
-        e.preventDefault()
-        console.log(email, password)
+    const handleLogin = async (e, email, password) => {
+        e.preventDefault();
         try {
-            const response = await axios.post("http://localhost:8000/api/login", {email,password})
-            if(response.status===200){
-                localStorage.setItem('token',response.data.token)
-                setIsAuthenticated(true)
-                alert(response.data.message)
-                navigate('/')
+            const response = await axios.post("http://localhost:8000/api/login", { email, password });
+            if (response.status === 200) {
+                localStorage.setItem('token', response.data.token);
+                setTokenStorage(response.data.token); 
+                setIsAuthenticated(true);
+                alert(response.data.message);
+                navigate('/');
             }
         } catch (error) {
-            alert(error.response.data)
+            alert(error.response.data);
         }
-    }
+    };
 
     return (
-        <AuthContext.Provider value={{isAuthenticated, setIsAuthenticated, handleLogin, handleLogout}}>
+        <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated, tokenStorage, handleLogin, handleLogout }}>
             {children}
         </AuthContext.Provider>
-    )
+    );
 }
