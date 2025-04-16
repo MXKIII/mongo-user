@@ -24,6 +24,8 @@ const serviceSchema = new Schema({
     availability : {
         type : Boolean,
         required: true,
+    },image:{
+        type:String,
     },
     userID:{
         type:mongoose.Schema.Types.ObjectId,
