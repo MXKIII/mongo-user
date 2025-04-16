@@ -7,13 +7,27 @@ const Register = () => {
     const [lastName,setLastName] = useState('')
     const [email,setEmail] = useState('')
     const [password,setPassword] = useState('')
+    const [image, setImage] = useState(null);
     let navigate = useNavigate()
 
     const handleRegistration = async (e) =>{
         e.preventDefault()
         console.log('Submit')
         try {
-            const newUser = await axios.post("http://localhost:8000/api/register", {first_name : firstName,last_name : lastName, email, password})
+          const formData = new FormData();
+          formData.append("first_name",firstName);
+          formData.append("last_name",lastName);
+          formData.append("email",email);
+          formData.append("password",password);
+          if (image) {
+            formData.append("image",image);
+          }
+
+          const newUser = await axios.post("http://localhost:8000/api/register", formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          });
             if(newUser.status===201){
                 console.log(newUser)
                 navigate('/')
@@ -79,6 +93,18 @@ const Register = () => {
               onChange={e=> setPassword(e.target.value)}
             />
           </div>
+          <div className="mb-6">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="image">
+            Image de profil (optionnel)
+          </label>
+          <input
+            type="file"
+            id="image"
+            name="image"
+            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+            onChange={(e) => setImage(e.target.files[0])}
+          />
+        </div>
           <button
             type="submit"
             className="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:shadow-outline"

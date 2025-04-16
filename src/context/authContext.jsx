@@ -22,7 +22,7 @@ export const AuthController = ({ children }) => {
         localStorage.removeItem('token');
         setTokenStorage(null); 
         setIsAuthenticated(false);
-        navigate('/');
+        navigate('/login');
     };
 
     const handleLogin = async (e, email, password) => {

@@ -1,4 +1,4 @@
-import { Link } from 'react-router'
+import { Link } from 'react-router-dom';
 import { useContext } from 'react'
 import { ServicesContext } from '../context/servicesContext'
 import { AuthContext } from '../context/authContext'
@@ -23,7 +23,10 @@ const NavBar = () => {
                     : (
                         <>
                             <Link to='/profile'><li>Profile</li></Link>
-                            <Link to='/logout' onClick={handleLogout}><li>logout</li></Link>
+                            <Link to='/users'><li>Users</li></Link>
+                            <li onClick={handleLogout}>
+                               Logout
+                            </li>
                         </>
                     )
                     }
